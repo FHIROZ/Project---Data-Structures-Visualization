@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching Algorithms Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #searching {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+        h2 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 20px; }
+        .form-section { margin-bottom: 15px; }
+        label { font-size: 14px; color: #333; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 4px; margin-top: 10px; }
+        button:hover { background-color: #0056b3; }
+        canvas { display: block; margin: 20px 0; background-color: #fafafa; border: 1px solid #ddd; border-radius: 4px; }
+        .result-box { margin-top: 20px; padding: 10px; background-color: #e0f7fa; border: 1px solid #00bcd4; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div id="searching" class="content">
+        <h2>Searching Algorithms</h2>
+        <p>Visualize Linear Search and Binary Search in action.</p>
+        <form id="searchingForm">
+            <div class="form-section">
+                <label for="array-elements">Enter Array Elements (comma separated):</label>
+                <input type="text" id="array-elements" name="array-elements">
+            </div>
+            <div class="form-section">
+                <label for="search-key">Enter Element to Search:</label>
+                <input type="number" id="search-key" name="search-key">
+            </div>
+            <button type="submit">Start Search</button>
+        </form>
+        <canvas id="searchingCanvas" width="800" height="200"></canvas>
+        <div class="result-box">
+            <h3>Search Result:</h3>
+            <p id="searchResult">No search performed yet.</p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('searchingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const inputElements = document.getElementById('array-elements').value;
+            let array = inputElements.split(',').map(num => parseInt(num.trim(), 10));
+            const searchKey = parseInt(document.getElementById('search-key').value, 10);
+            
+            if (isNaN(searchKey)) {
+                alert('Please enter a valid search key.');
+                return;
+            }
+            
+            drawVisualization(array, -1);
+            linearSearch(array, searchKey);
+        });
+
+        function drawVisualization(array, highlightIndex) {
+            const canvas = document.getElementById('searchingCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const barWidth = canvas.width / array.length;
+            ctx.font = '16px Arial';
+            
+            array.forEach((value, index) => {
+                const barHeight = value * 2;
+                ctx.fillStyle = index === highlightIndex ? 'red' : 'blue';
+                ctx.fillRect(index * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+                ctx.fillStyle = 'black';
+                ctx.fillText(value, index * barWidth + barWidth / 3, canvas.height - barHeight - 10);
+            });
+        }
+
+        async function linearSearch(arr, key) {
+            for (let i = 0; i < arr.length; i++) {
+                drawVisualization(arr, i);
+                await delay(500);
+                if (arr[i] === key) {
+                    document.getElementById('searchResult').innerText = `Element found at index ${i}`;
+                    return;
+                }
+            }
+            document.getElementById('searchResult').innerText = 'Element not found.';
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>

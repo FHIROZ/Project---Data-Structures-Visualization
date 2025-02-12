@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Operations</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #graph {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            display: block;
+            margin-top: 20px;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Styling for graph nodes and edges */
+        .graph-node {
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+        }
+
+        .graph-edge {
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Graphs Section -->
+    <div id="graph" class="content">
+        <h2>Graph Operations</h2>
+        <p>Perform operations like Insert, Remove, Search, and Traverse.</p>
+        
+        <!-- Insert Node Section -->
+        <form id="graphForm">
+            <div class="form-section">
+                <label for="graph-node">Add Node:</label>
+                <input type="text" id="graph-node" name="graph-node">
+            </div>
+            <button type="submit">Add Node</button>
+        </form>
+
+        <!-- Remove Node Section -->
+        <form id="removeForm">
+            <div class="form-section">
+                <label for="remove-node">Remove Node:</label>
+                <input type="text" id="remove-node" name="remove-node">
+            </div>
+            <button type="submit">Remove Node</button>
+        </form>
+
+        <!-- Search Node Section -->
+        <form id="searchForm">
+            <div class="form-section">
+                <label for="search-node">Search for Node:</label>
+                <input type="text" id="search-node" name="search-node">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Traverse Nodes Section -->
+        <button id="traverseButton">Traverse Graph</button>
+        <p id="traverseResult"></p>
+
+        <canvas id="graphCanvas" width="800" height="300"></canvas>
+    </div>
+
+    <script>
+        /* ==============================
+            Graph Operations
+        ============================== */
+        let graphNodes = [];
+        let graphEdges = [];
+        
+        // Add Node to the Graph
+        document.getElementById('graphForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('graph-node').value.trim();
+            if (nodeValue !== '') {
+                graphNodes.push({
+                    value: nodeValue,
+                    x: Math.random() * 700 + 50,
+                    y: Math.random() * 200 + 50
+                });
+                // Optionally, add an edge connecting the last two nodes
+                if (graphNodes.length > 1) {
+                    const len = graphNodes.length;
+                    graphEdges.push({ from: graphNodes[len - 2], to: graphNodes[len - 1] });
+                }
+                drawGraphVisualization();
+                document.getElementById('graph-node').value = '';
+            }
+        });
+
+        // Remove Node from the Graph
+        document.getElementById('removeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('remove-node').value.trim();
+            const index = graphNodes.findIndex(node => node.value === nodeValue);
+            if (index !== -1) {
+                // Remove corresponding edges
+                graphEdges = graphEdges.filter(edge => edge.from !== graphNodes[index] && edge.to !== graphNodes[index]);
+                // Remove the node
+                graphNodes.splice(index, 1);
+                drawGraphVisualization();
+                document.getElementById('remove-node').value = '';
+            }
+        });
+
+        // Search Node in the Graph
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('search-node').value.trim();
+            const node = graphNodes.find(node => node.value === nodeValue);
+            if (node) {
+                alert(`Node "${nodeValue}" found at position (${node.x}, ${node.y})`);
+            } else {
+                alert(`Node "${nodeValue}" not found.`);
+            }
+            document.getElementById('search-node').value = '';
+        });
+
+        // Traverse Nodes in the Graph
+        document.getElementById('traverseButton').addEventListener('click', function() {
+            let result = 'Traversing nodes: ';
+            graphNodes.forEach(node => {
+                result += node.value + ' -> ';
+            });
+            document.getElementById('traverseResult').textContent = result.slice(0, -4);  // Removing last ' -> '
+        });
+
+        // Draw Graph Visualization
+        function drawGraphVisualization() {
+            const canvas = document.getElementById('graphCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '16px Arial';
+
+            // Draw edges
+            graphEdges.forEach(edge => {
+                ctx.beginPath();
+                ctx.moveTo(edge.from.x, edge.from.y);
+                ctx.lineTo(edge.to.x, edge.to.y);
+                ctx.stroke();
+            });
+
+            // Draw nodes
+            graphNodes.forEach(node => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 20, 0, Math.PI * 2);
+                ctx.fillStyle = '#4CAF50';
+                ctx.fill();
+                ctx.fillStyle = 'white';
+                ctx.fillText(node.value, node.x - 5, node.y + 5);
+            });
+        }
+    </script>
+</body>
+</html>

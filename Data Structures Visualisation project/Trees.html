@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #tree {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            display: block;
+            margin-top: 20px;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Trees Section -->
+    <div id="tree" class="content">
+        <h2>Trees</h2>
+        <p>Visualize tree traversals and operations on binary trees.</p>
+        
+        <!-- Add Node Form -->
+        <form id="treeForm">
+            <div class="form-section">
+                <label for="tree-node">Add Node Value:</label>
+                <input type="text" id="tree-node" name="tree-node">
+            </div>
+            <button type="submit">Add Node</button>
+        </form>
+
+        <!-- Remove Node Form -->
+        <form id="removeForm">
+            <div class="form-section">
+                <label for="remove-node">Remove Node Value:</label>
+                <input type="text" id="remove-node" name="remove-node">
+            </div>
+            <button type="submit">Remove Node</button>
+        </form>
+
+        <!-- Search Node Form -->
+        <form id="searchForm">
+            <div class="form-section">
+                <label for="search-node">Search Node Value:</label>
+                <input type="text" id="search-node" name="search-node">
+            </div>
+            <button type="submit">Search Node</button>
+        </form>
+
+        <!-- Traverse Tree Button -->
+        <button id="traverseButton">Traverse Tree (Pre-order)</button>
+        <p id="traverseResult"></p>
+
+        <canvas id="treeCanvas" width="800" height="300"></canvas>
+    </div>
+
+    <script>
+        /* ==============================
+        Tree Visualization and Operations
+        ============================== */
+        let treeNodes = [];
+        let treeRoot = null;
+
+        // Insert Node into the Tree (Insert at root for simplicity)
+        document.getElementById('treeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('tree-node').value.trim();
+            if (nodeValue !== '') {
+                treeNodes.push(nodeValue);
+                treeRoot = insertNode(treeRoot, nodeValue); // Insertion logic
+                drawTreeVisualization();
+                document.getElementById('tree-node').value = '';
+            }
+        });
+
+        // Insert Node Logic (Simple Binary Search Tree)
+        function insertNode(root, value) {
+            if (root === null) {
+                return { value: value, left: null, right: null };
+            }
+            if (value < root.value) {
+                root.left = insertNode(root.left, value);
+            } else {
+                root.right = insertNode(root.right, value);
+            }
+            return root;
+        }
+
+        // Remove Node from the Tree
+        document.getElementById('removeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('remove-node').value.trim();
+            if (nodeValue !== '') {
+                treeRoot = removeNode(treeRoot, nodeValue);
+                drawTreeVisualization();
+                document.getElementById('remove-node').value = '';
+            }
+        });
+
+        // Remove Node Logic (BST Delete)
+        function removeNode(root, value) {
+            if (root === null) return null;
+            if (value < root.value) {
+                root.left = removeNode(root.left, value);
+            } else if (value > root.value) {
+                root.right = removeNode(root.right, value);
+            } else {
+                // Node to be deleted
+                if (root.left === null) {
+                    return root.right;
+                } else if (root.right === null) {
+                    return root.left;
+                }
+                // Node with two children
+                let minNode = findMin(root.right);
+                root.value = minNode.value;
+                root.right = removeNode(root.right, minNode.value);
+            }
+            return root;
+        }
+
+        function findMin(node) {
+            while (node.left !== null) node = node.left;
+            return node;
+        }
+
+        // Search for a Node in the Tree
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('search-node').value.trim();
+            const foundNode = searchNode(treeRoot, nodeValue);
+            if (foundNode) {
+                alert(`Node "${nodeValue}" found in the tree.`);
+            } else {
+                alert(`Node "${nodeValue}" not found.`);
+            }
+            document.getElementById('search-node').value = '';
+        });
+
+        // Search Node Logic
+        function searchNode(root, value) {
+            if (root === null || root.value === value) return root;
+            if (value < root.value) {
+                return searchNode(root.left, value);
+            } else {
+                return searchNode(root.right, value);
+            }
+        }
+
+        // Traverse the Tree in Pre-order
+        document.getElementById('traverseButton').addEventListener('click', function() {
+            let result = 'Pre-order Traversal: ';
+            const traversalResult = preOrderTraversal(treeRoot);
+            result += traversalResult.join(' -> ');
+            document.getElementById('traverseResult').textContent = result;
+        });
+
+        // Pre-order Traversal Logic
+        function preOrderTraversal(root) {
+            let result = [];
+            if (root !== null) {
+                result.push(root.value);
+                result = result.concat(preOrderTraversal(root.left));
+                result = result.concat(preOrderTraversal(root.right));
+            }
+            return result;
+        }
+
+        // Draw Tree Visualization
+        function drawTreeVisualization() {
+            const canvas = document.getElementById('treeCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '16px Arial';
+            drawNode(treeRoot, canvas.width / 2, 30, canvas.width / 4, ctx);
+        }
+
+        function drawNode(node, x, y, xOffset, ctx) {
+            if (node === null) return;
+            // Draw node
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, Math.PI * 2);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.fillText(node.value, x - 5, y + 5);
+
+            // Draw left and right children
+            if (node.left) {
+                ctx.beginPath();
+                ctx.moveTo(x, y + 20);
+                ctx.lineTo(x - xOffset, y + 60);
+                ctx.stroke();
+                drawNode(node.left, x - xOffset, y + 60, xOffset / 2, ctx);
+            }
+            if (node.right) {
+                ctx.beginPath();
+                ctx.moveTo(x, y + 20);
+                ctx.lineTo(x + xOffset, y + 60);
+                ctx.stroke();
+                drawNode(node.right, x + xOffset, y + 60, xOffset / 2, ctx);
+            }
+        }
+    </script>
+</body>
+</html>

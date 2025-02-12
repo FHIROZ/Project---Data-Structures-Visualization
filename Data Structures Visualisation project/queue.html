@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Visualization</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #queue {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"], button[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+        button[type="submit"]:hover, button[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            display: block;
+            margin-top: 20px;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="queue" class="content">
+        <form id="queueForm">
+            <div class="form-section">
+                <label for="queue-value">Enter Value:</label>
+                <input type="text" id="queue-value" name="queue-value">
+            </div>
+            <button type="submit">Enqueue</button>
+            <button type="button" id="dequeueButton">Dequeue</button>
+            <button type="button" onclick="peekQueue()">Peek</button>
+            <button type="button" onclick="traverseQueue()">Traverse</button>
+            <button type="button" onclick="searchQueue()">Search</button>
+        </form>
+        <canvas id="queueCanvas" width="600" height="200"></canvas>
+    </div>
+    
+    <script>
+        // Initialize the queue array
+        let queue = [];
+
+        // Event listener for Queue Enqueue
+        document.getElementById('queueForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const value = document.getElementById('queue-value').value.trim();
+            if (value !== '') {
+                queue.push(value); // Enqueue the value
+                drawQueueVisualization(); // Redraw the queue visualization
+                document.getElementById('queue-value').value = ''; // Clear input field
+            }
+        });
+
+        // Event listener for Queue Dequeue
+        document.getElementById('dequeueButton').addEventListener('click', function() {
+            if (queue.length > 0) {
+                queue.shift(); // Dequeue the first element
+                drawQueueVisualization(); // Redraw the queue visualization
+            }
+        });
+
+        // Function to draw Queue visualization
+        function drawQueueVisualization() {
+            const canvas = document.getElementById('queueCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
+            const nodeWidth = 80;
+            const nodeHeight = 40;
+            const gap = 20;
+            ctx.font = '16px Arial';
+
+            // Loop through each queue element and draw it as a rectangle
+            queue.forEach((value, index) => {
+                const x = index * (nodeWidth + gap) + 20; // Calculate x position based on index
+                const y = canvas.height / 2 - nodeHeight / 2; // Center y position
+                ctx.strokeRect(x, y, nodeWidth, nodeHeight); // Draw rectangle
+                ctx.fillText(value, x + nodeWidth / 2 - 10, y + nodeHeight / 2 + 5); // Draw text inside rectangle
+            });
+        }
+
+        // Function to peek at the first element in the queue
+        function peekQueue() {
+            if (queue.length > 0) {
+                alert("Front element: " + queue[0]);
+            } else {
+                alert("Queue is empty");
+            }
+        }
+
+        // Function to traverse and alert the queue elements
+        function traverseQueue() {
+            if (queue.length > 0) {
+                alert("Queue elements: " + queue.join(', '));
+            } else {
+                alert("Queue is empty");
+            }
+        }
+
+        // Function to search for an element in the queue
+        function searchQueue() {
+            const searchValue = prompt("Enter value to search:");
+            if (searchValue !== null) {
+                const index = queue.indexOf(searchValue);
+                if (index !== -1) {
+                    alert(`Element "${searchValue}" found at position ${index + 1}`);
+                } else {
+                    alert(`Element "${searchValue}" not found`);
+                }
+            }
+        }
+
+        // Initial draw of the queue (empty queue)
+        drawQueueVisualization();
+    </script>
+</body>
+</html>

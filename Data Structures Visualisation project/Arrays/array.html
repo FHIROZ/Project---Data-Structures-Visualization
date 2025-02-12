@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Array Visualization</title>
+  <style>
+    /* Reset some default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    #array {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .form-section {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 14px;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    canvas {
+      display: block;
+      margin: 20px 0;
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .button-container {
+      margin-top: 20px;
+    }
+
+    button.operation {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Arrays Section -->
+  <div id="array" class="content">
+    <h2>Array Visualization</h2>
+    <p>Visualize array operations like adding, removing, traversing, and searching elements.</p>
+    <form id="arrayForm">
+      <div class="form-section">
+        <label for="array-size">Array Size:</label>
+        <input type="text" id="array-size" name="array-size" placeholder="Enter array size">
+      </div>
+      <div class="form-section">
+        <label for="array-elements">Array Elements (comma separated):</label>
+        <input type="text" id="array-elements" name="array-elements" placeholder="Enter array elements">
+      </div>
+      <button type="submit">Create Array</button>
+    </form>
+
+    <div class="button-container">
+      <button class="operation" id="insertBtn">Insert</button>
+      <button class="operation" id="deleteBtn">Delete</button>
+      <button class="operation" id="traverseBtn">Traverse</button>
+      <button class="operation" id="searchBtn">Search</button>
+    </div>
+
+    <canvas id="arrayCanvas" width="800" height="200"></canvas>
+  </div>
+
+  <script>
+    /* ==============================
+       Array Visualization
+       ============================== */
+    let arrayElements = [];
+    let arraySize = 0;
+
+    // Create the array based on size and elements input
+    document.getElementById('arrayForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const size = parseInt(document.getElementById('array-size').value.trim());
+      const elements = document.getElementById('array-elements').value.trim().split(',');
+
+      if (!isNaN(size) && size > 0 && elements.length === size) {
+        arraySize = size;
+        arrayElements = elements.map(element => element.trim());
+        drawArrayVisualization(arrayElements);
+        document.getElementById('array-size').value = '';
+        document.getElementById('array-elements').value = '';
+      } else {
+        alert('Please enter valid size and elements!');
+      }
+    });
+
+    // Insert a new element into the array
+    document.getElementById('insertBtn').addEventListener('click', function () {
+      const newElement = prompt('Enter element to insert:');
+      if (newElement) {
+        arrayElements.push(newElement);
+        drawArrayVisualization(arrayElements);
+      }
+    });
+
+    // Delete an element from the array
+    document.getElementById('deleteBtn').addEventListener('click', function () {
+      const elementToDelete = prompt('Enter element to delete:');
+      const index = arrayElements.indexOf(elementToDelete);
+      if (index !== -1) {
+        arrayElements.splice(index, 1);
+        drawArrayVisualization(arrayElements);
+      } else {
+        alert('Element not found!');
+      }
+    });
+
+    // Traverse the array and alert the elements
+    document.getElementById('traverseBtn').addEventListener('click', function () {
+      alert('Array Traversal: ' + arrayElements.join(', '));
+    });
+
+    // Search for an element in the array
+    document.getElementById('searchBtn').addEventListener('click', function () {
+      const searchElement = prompt('Enter element to search:');
+      if (arrayElements.includes(searchElement)) {
+        alert(`Element "${searchElement}" found in the array.`);
+      } else {
+        alert(`Element "${searchElement}" not found in the array.`);
+      }
+    });
+
+    // Function to draw the array visualization
+    function drawArrayVisualization(array) {
+      const canvas = document.getElementById('arrayCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+      const cellWidth = canvas.width / array.length;
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+    
+      // Draw array elements as cells
+      for (let i = 0; i < array.length; i++) {
+        ctx.strokeRect(i * cellWidth, 50, cellWidth, 50); // Draw rectangle for each element
+        ctx.fillText(array[i], i * cellWidth + cellWidth / 2, 80); // Center text inside the rectangle
+      }
+    }
+  </script>
+</body>
+</html>

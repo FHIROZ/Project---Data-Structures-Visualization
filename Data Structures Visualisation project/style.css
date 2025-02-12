@@ -1,0 +1,562 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+/* header {
+    background-color: #004080;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+
+} */
+#nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: #0066cc;
+  background-image: url('http://wallpapercave.com/wp/g16HEbU.jpg');
+  background-size: cover;  
+  background-position: center; 
+  height: 50px;  
+  padding: 10px;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #0066cc;
+    background-image: url('bgimg.jpg');
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    display: block;
+}
+nav a:hover {
+    background-color: #00509e;
+}
+.content {
+    padding: 2rem;
+    display: none;
+    
+    
+}
+.content.active {
+    display: block;
+    background-color: white;
+    background-repeat: no-repeat;
+ 
+    background-size: cover; 
+    background-position: center; 
+    height: 100vh; 
+    margin: 0; 
+}
+.content.active h2{
+    color: blue;
+}
+.form-section {
+    margin: 1rem 0;
+}
+.form-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.form-section input, .form-section textarea, .form-section select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #004080;
+}
+/* --------------------------------------------------------------------------- */
+
+header {
+    background-color: #004080; 
+    color: blue; 
+    text-align: center;
+    position: relative; 
+}
+
+#nav {
+    width: 100%;
+    background-size: cover; 
+    background-position: center;
+    height: 50vh; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+}
+#logo {
+    position: absolute; /* Fixes the logo to the top-left corner */
+    top: 20px; /* Adjusts the distance from the top */
+    left: 20px; /* Adjusts the distance from the left */
+    width: 50px; /* Set the desired logo width */
+    height: auto; /* Maintain aspect ratio */
+}
+.contact-details {
+    background-color: #e8f4f8;  /* Light blue background */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    margin: 0;
+}
+
+.social-media {
+    background-color: #f0f7f4;  /* Light green background */
+    border-radius: 8px;
+    padding: 20px;
+    margin:  0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-details h3, .social-media h3 {
+    font-size: 1.5rem;
+    color: #004080;
+    margin-bottom: 15px;
+}
+
+.contact-details p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.contact-details strong {
+    font-weight: bold;
+    color: #009ccc;
+}
+.social-media{
+    background-color: darkgray;
+}
+
+.social-media a {
+    text-decoration: none;
+    color: #004080;
+    font-size: 1.1rem;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+    
+}
+
+.social-media a:hover {
+    color: #004080;
+    
+}
+
+footer p {
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    margin-top: 0;
+}
+
+footer p a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+footer p a:hover {
+    text-decoration: underline;
+}
+/*stack queue css------------------------------------------------------------------ */
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #header {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Styling the content sections */
+  .content {
+    display: none; /* Hide by default */
+    padding: 20px;
+  }
+  
+  .form-section {
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"], input[type="number"] {
+    padding: 5px;
+    font-size: 16px;
+    width: 200px;
+  }
+  
+  canvas {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  /* When the Stack or Queue section is active, show it */
+  #stack, #queue, #array {
+    display: none;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* header {
+    background-color: #004080;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+
+} */
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #0066cc;
+
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    display: block;
+}
+nav a:hover {
+    background-color: #00509e;
+}
+.content {
+    padding: 2rem;
+    display: none;
+
+
+}
+.content.active {
+    display: block;
+    background-color: white;
+    background-repeat: no-repeat;
+
+    background-size: cover; /* Ensures the image covers the entire section */
+    background-position: center; /* Centers the image */
+    width: 100%;
+    height: 100vh; /* Makes the image full height of the viewport */
+    margin: 0; /* Removes any default margin */
+}
+.content.active h2{
+    color: blue;
+}
+.form-section {
+    margin: 1rem 0;
+}
+.form-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.form-section input, .form-section textarea, .form-section select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc; /* Added border */
+    border-radius: 4px; /* Added border-radius */
+    box-sizing: border-box; /* Added box-sizing */
+}
+button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px; /* Added border-radius */
+    transition: background-color 0.3s ease; /* Added transition */
+}
+button:hover {
+    background-color: #004080;
+}
+/* --------------------------------------------------------------------------- */
+
+header {
+    background-color: #004080;
+    color: blue; /* Changed color from red to blue */
+    text-align: center;
+    position: relative;
+    padding: 20px 0; /* Added padding for better spacing */
+}
+
+#nav {
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#logo {
+    position: absolute; /* Fixes the logo to the top-left corner */
+    top: 20px; /* Adjusts the distance from the top */
+    left: 20px; /* Adjusts the distance from the left */
+    width: 50px; /* Set the desired logo width */
+    height: auto; /* Maintain aspect ratio */
+}
+.contact-details {
+    background-color: #e8f4f8;  /* Light blue background */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    margin: 0;
+}
+
+.social-media {
+    background-color: #f0f7f4;  /* Light green background */
+    border-radius: 8px;
+    padding: 20px;
+    margin:  0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-details h3, .social-media h3 {
+    font-size: 1.5rem;
+    color: #004080;
+    margin-bottom: 15px;
+}
+
+.contact-details p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.contact-details strong {
+    font-weight: bold;
+    color: #009ccc;
+}
+.social-media{
+    background-color: darkgray;
+}
+
+.social-media a {
+    text-decoration: none;
+    color: #004080;
+    font-size: 1.1rem;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+
+}
+
+.social-media a:hover {
+    color: #004080;
+
+}
+
+footer p {
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    margin-top: 0;
+}
+
+footer p a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+footer p a:hover {
+    text-decoration: underline;
+}
+/*stack queue css------------------------------------------------------------------ */
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  #header {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  /* Styling the content sections */
+  .content {
+    display: none; /* Hide by default */
+    padding: 20px;
+    border-radius: 8px; /* Added border-radius */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Added shadow */
+    margin-bottom: 20px; /* Added margin */
+  }
+
+  .form-section {
+    margin-bottom: 10px;
+  }
+
+  input[type="text"], input[type="number"] {
+    padding: 5px;
+    font-size: 16px;
+    width: 200px;
+    border: 1px solid #ccc; /* Added border */
+    border-radius: 4px; /* Added border-radius */
+    box-sizing: border-box; /* Added box-sizing */
+  }
+
+  canvas {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Added border-radius */
+  }
+
+  /* When the Stack or Queue section is active, show it */
+  #stack, #queue, #array {
+    display: none;
+  }
+  #array {
+    text-align: center; /* Center the array section content */
+  }
+
+  #arrayForm {
+    display: inline-block; /* Keeps the form elements on the same line */
+    text-align: left; /* Re-align form elements to the left */
+  }
+
+  #array-element {
+    width: 150px; /* Adjust the width as needed */
+    padding: 8px;
+    margin: 5px;
+    box-sizing: border-box; /* Ensures padding doesn't affect the overall width */
+  }
+
+  #arrayCanvas {
+    margin: 20px auto; /* Center the canvas */
+    display: block; /* Ensures margin: auto works */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  /* Add some spacing and styling to the labels and inputs */
+  .form-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-section input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  /* Style the add element button */
+  #arrayForm button {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #arrayForm button:hover {
+    background-color: #4cae4c;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+ 
+  header {
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+  header h1 {
+    flex-grow: 1;
+    margin: 0;
+  }
+  #logo {
+    width: 50px;
+  }
+  nav {
+    background: #444;
+    padding: 10px 20px;
+  }
+  nav a {
+    color: #fff;
+    margin-right: 15px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  .content {
+    display: none;
+    padding: 20px;
+  }
+  .content.active {
+    display: block;
+  }
+  .form-section {
+    margin-bottom: 10px;
+  }
+  canvas {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+  }
+  footer {
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+  }
+
+    

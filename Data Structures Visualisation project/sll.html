@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Linked List Operations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #linkedlist {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px 0;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="linkedlist" class="content">
+        <h2>Linked Lists Operations</h2>
+        <p>Perform operations like Insert (append/prepend), Remove, Search, and Traverse.</p>
+
+        <!-- Insert Node Section -->
+        <form id="insertForm">
+            <div class="form-section">
+                <label for="node-value">Add Node Value:</label>
+                <input type="text" id="node-value" name="node-value">
+            </div>
+            <button type="submit">Add Node</button>
+        </form>
+
+        <!-- Remove Node Section -->
+        <form id="removeForm">
+            <div class="form-section">
+                <label for="remove-value">Remove Node Value:</label>
+                <input type="text" id="remove-value" name="remove-value">
+            </div>
+            <button type="submit">Remove Node</button>
+        </form>
+
+        <!-- Search Node Section -->
+        <form id="searchForm">
+            <div class="form-section">
+                <label for="search-value">Search for Node:</label>
+                <input type="text" id="search-value" name="search-value">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Traverse Linked List Section -->
+        <button id="traverseButton">Traverse List</button>
+        <p id="traverseResult"></p>
+
+        <canvas id="linkedListCanvas" width="800" height="200"></canvas>
+    </div>
+
+    <script>
+        let linkedListNodes = [];
+
+        // Add Node (Insert) to the Linked List
+        document.getElementById('insertForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('node-value').value.trim();
+            if (nodeValue !== '') {
+                linkedListNodes.push(nodeValue);
+                drawLinkedListVisualization();
+                document.getElementById('node-value').value = '';
+            }
+        });
+
+        // Remove Node from the Linked List
+        document.getElementById('removeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('remove-value').value.trim();
+            const index = linkedListNodes.indexOf(nodeValue);
+            if (index !== -1) {
+                linkedListNodes.splice(index, 1);
+                drawLinkedListVisualization();
+                document.getElementById('remove-value').value = '';
+            }
+        });
+
+        // Search Node in the Linked List
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nodeValue = document.getElementById('search-value').value.trim();
+            const index = linkedListNodes.indexOf(nodeValue);
+            const resultText = index !== -1 ? `Node found at position ${index}` : `Node not found`;
+            alert(resultText);
+            document.getElementById('search-value').value = '';
+        });
+
+        // Traverse Linked List and Show All Nodes
+        document.getElementById('traverseButton').addEventListener('click', function() {
+            document.getElementById('traverseResult').textContent = `Traversing: ${linkedListNodes.join(' -> ')}`;
+        });
+
+        // Draw Linked List Visualization
+        function drawLinkedListVisualization() {
+            const canvas = document.getElementById('linkedListCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const nodeWidth = 80;
+            const nodeHeight = 40;
+            const gap = 20;
+            ctx.font = '16px Arial';
+            linkedListNodes.forEach((value, index) => {
+                const x = index * (nodeWidth + gap) + 20;
+                const y = canvas.height / 2 - nodeHeight / 2;
+                // Draw node rectangle
+                ctx.strokeRect(x, y, nodeWidth, nodeHeight);
+                ctx.fillText(value, x + nodeWidth / 2 - 5, y + nodeHeight / 2 + 5);
+                // Draw arrow if not the last node
+                if (index < linkedListNodes.length - 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(x + nodeWidth, y + nodeHeight / 2);
+                    ctx.lineTo(x + nodeWidth + gap, y + nodeHeight / 2);
+                    ctx.stroke();
+                    // Arrow head
+                    ctx.beginPath();
+                    ctx.moveTo(x + nodeWidth + gap - 5, y + nodeHeight / 2 - 5);
+                    ctx.lineTo(x + nodeWidth + gap, y + nodeHeight / 2);
+                    ctx.lineTo(x + nodeWidth + gap - 5, y + nodeHeight / 2 + 5);
+                    ctx.fill();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Operations</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #stack {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"], button[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+        button[type="submit"]:hover, button[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            display: block;
+            margin-top: 20px;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Stack Section (no heading, no extra space) -->
+    <div id="stack" class="content">
+        <form id="stackForm">
+            <div class="form-section">
+                <label for="stack-value">Enter Value:</label>
+                <input type="text" id="stack-value" name="stack-value">
+            </div>
+            <button type="submit">Push</button>
+            <button type="button" onclick="popStack()">Pop</button>
+            <button type="button" onclick="peekStack()">Peek</button>
+            <button type="button" onclick="traverseStack()">Traverse</button>
+            <button type="button" onclick="searchStack()">Search</button>
+        </form>
+        <canvas id="stackCanvas" width="400" height="300"></canvas>
+    </div>
+
+    <script>
+        /* ==============================
+          Stack Operations & Visualization
+          ============================== */
+        // Initialize stack
+        let stack = [];
+      
+        // Event listener for Stack Push
+        document.getElementById('stackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const value = document.getElementById('stack-value').value.trim();
+            if (value !== '') {
+                stack.push(value);
+                drawStackVisualization();
+                document.getElementById('stack-value').value = '';
+            }
+        });
+      
+        // Function to draw Stack visualization
+        function drawStackVisualization() {
+            const canvas = document.getElementById('stackCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const nodeHeight = 40;
+            const gap = 10;
+            ctx.font = '16px Arial';
+        
+            stack.forEach((value, index) => {
+                const y = canvas.height - (index + 1) * (nodeHeight + gap);
+                ctx.strokeRect(100, y, 200, nodeHeight);
+                ctx.fillText(value, 200, y + nodeHeight / 2 + 5);
+            });
+        }
+        
+        // Function to pop from stack
+        function popStack() {
+            if (stack.length > 0) {
+                stack.pop();
+                drawStackVisualization();
+            }
+        }
+      
+        // Function to peek the top element of stack
+        function peekStack() {
+            if (stack.length > 0) {
+                alert("Top element: " + stack[stack.length - 1]);
+            } else {
+                alert("Stack is empty");
+            }
+        }
+        
+        // Function to traverse and alert the stack elements
+        function traverseStack() {
+            if (stack.length > 0) {
+                alert("Stack elements: " + stack.join(', '));
+            } else {
+                alert("Stack is empty");
+            }
+        }
+        
+        // Function to search for an element in the stack
+        function searchStack() {
+            const searchValue = prompt("Enter value to search:");
+            if (searchValue !== null) {
+                const index = stack.indexOf(searchValue);
+                if (index !== -1) {
+                    alert(`Element "${searchValue}" found at position ${index + 1}`);
+                } else {
+                    alert(`Element "${searchValue}" not found`);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

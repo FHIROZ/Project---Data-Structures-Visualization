@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithms Visualization</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #sorting {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px 0;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border: 1px solid #00bcd4;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sorting Algorithms Section -->
+    <div id="sorting" class="content">
+        <h2>Sorting Algorithms</h2>
+        <p>Visualize different sorting algorithms in action, such as Bubble Sort, Merge Sort, Quick Sort, Selection Sort, and Insertion Sort.</p>
+        <form id="sortingForm">
+            <div class="form-section">
+                <label for="array-sort">Array Size:</label>
+                <input type="number" id="array-sort" name="array-sort" value="5" min="1">
+            </div>
+            <div class="form-section">
+                <label for="array-elements">Enter Array Elements (comma separated):</label>
+                <input type="text" id="array-elements" name="array-elements">
+            </div>
+            <button type="submit">Start Sort</button>
+        </form>
+        <canvas id="sortingCanvas" width="800" height="200"></canvas>
+
+        <div class="result-box">
+            <h3>Sorted Array:</h3>
+            <p id="sortedArrayResult">No sorting performed yet.</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('sortingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const size = parseInt(document.getElementById('array-sort').value, 10);
+            const inputElements = document.getElementById('array-elements').value;
+            let array = inputElements.split(',').map(num => parseInt(num.trim(), 10));
+
+            if (array.length !== size) {
+                alert('Array size does not match the number of elements!');
+                return;
+            }
+
+            // Start sorting operations
+            runSortAlgorithms(array);
+        });
+
+        function drawSortingVisualization(array) {
+            const canvas = document.getElementById('sortingCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const barWidth = canvas.width / array.length;
+            ctx.font = '16px Arial';
+
+            array.forEach((value, index) => {
+                const barHeight = value * 2; // Scale the value for display
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(index * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+                ctx.strokeRect(index * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+                // Display the value of each bar
+                ctx.fillStyle = 'black';
+                ctx.fillText(value, index * barWidth + barWidth / 3, canvas.height - barHeight - 10);
+            });
+        }
+
+        // Sorting Algorithm visualizations
+        function runSortAlgorithms(array) {
+            // Bubble Sort
+            bubbleSort(array.slice(), 0);
+            // Selection Sort
+            selectionSort(array.slice(), 0);
+            // Insertion Sort
+            insertionSort(array.slice(), 0);
+            // Quick Sort
+            quickSort(array.slice(), 0, array.length - 1);
+            // Merge Sort
+            mergeSort(array.slice(), 0, array.length - 1);
+        }
+
+        // Bubble Sort visualization
+        async function bubbleSort(arr, delay) {
+            for (let i = 0; i < arr.length; i++) {
+                for (let j = 0; j < arr.length - i - 1; j++) {
+                    if (arr[j] > arr[j + 1]) {
+                        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // Swap
+                    }
+                }
+                await delaySort(500);
+                drawSortingVisualization(arr);
+            }
+            updateSortedArray(arr);
+        }
+
+        // Selection Sort visualization
+        async function selectionSort(arr, delay) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                let minIdx = i;
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[j] < arr[minIdx]) {
+                        minIdx = j;
+                    }
+                }
+                [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]]; // Swap
+                await delaySort(500);
+                drawSortingVisualization(arr);
+            }
+            updateSortedArray(arr);
+        }
+
+        // Insertion Sort visualization
+        async function insertionSort(arr, delay) {
+            for (let i = 1; i < arr.length; i++) {
+                let key = arr[i];
+                let j = i - 1;
+                while (j >= 0 && arr[j] > key) {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+                arr[j + 1] = key;
+                await delaySort(500);
+                drawSortingVisualization(arr);
+            }
+            updateSortedArray(arr);
+        }
+
+        // Quick Sort visualization
+        async function quickSort(arr, left, right) {
+            if (left < right) {
+                let pivotIdx = await partition(arr, left, right);
+                await quickSort(arr, left, pivotIdx - 1);
+                await quickSort(arr, pivotIdx + 1, right);
+            }
+            updateSortedArray(arr);
+        }
+
+        async function partition(arr, left, right) {
+            let pivot = arr[right];
+            let i = left - 1;
+            for (let j = left; j < right; j++) {
+                if (arr[j] <= pivot) {
+                    i++;
+                    [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap
+                }
+            }
+            [arr[i + 1], arr[right]] = [arr[right], arr[i + 1]]; // Swap pivot
+            drawSortingVisualization(arr);
+            await delaySort(500);
+            return i + 1;
+        }
+
+        // Merge Sort visualization
+        async function mergeSort(arr, left, right) {
+            if (left < right) {
+                let mid = Math.floor((left + right) / 2);
+                await mergeSort(arr, left, mid);
+                await mergeSort(arr, mid + 1, right);
+                await merge(arr, left, mid, right);
+            }
+            updateSortedArray(arr);
+        }
+
+        async function merge(arr, left, mid, right) {
+            let n1 = mid - left + 1;
+            let n2 = right - mid;
+            let leftArr = arr.slice(left, mid + 1);
+            let rightArr = arr.slice(mid + 1, right + 1);
+
+            let i = 0, j = 0, k = left;
+            while (i < n1 && j < n2) {
+                if (leftArr[i] <= rightArr[j]) {
+                    arr[k] = leftArr[i];
+                    i++;
+                } else {
+                    arr[k] = rightArr[j];
+                    j++;
+                }
+                k++;
+            }
+
+            while (i < n1) {
+                arr[k] = leftArr[i];
+                i++;
+                k++;
+            }
+
+            while (j < n2) {
+                arr[k] = rightArr[j];
+                j++;
+                k++;
+            }
+
+            drawSortingVisualization(arr);
+            await delaySort(500);
+        }
+
+        // Helper function to pause and allow animation
+        function delaySort(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Update the result box with the sorted array
+        function updateSortedArray(arr) {
+            document.getElementById('sortedArrayResult').innerText = `Sorted Array: [${arr.join(', ')}]`;
+        }
+    </script>
+</body>
+</html>
